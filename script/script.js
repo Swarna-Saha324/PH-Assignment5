@@ -9,7 +9,7 @@
 
     // 3. Check if they match 'admin' and 'admin123'
     if (userValue === 'admin' && passwordValue === 'admin123') {
-      alert('Login successful! Redirecting...');
+      
       
       // 4. Redirect to another page (change dashboard.html to your actual file)
       window.location.href = 'dashboard.html'; 
