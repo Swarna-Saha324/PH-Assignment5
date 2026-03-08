@@ -1,4 +1,4 @@
-
+ 
   document.getElementById('loginForm').addEventListener('submit', function(event) {
     // 1. Prevent the page from refreshing on form submit
     event.preventDefault();

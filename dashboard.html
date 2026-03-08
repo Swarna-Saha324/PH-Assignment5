@@ -40,9 +40,9 @@
   </div>
     <header class="mt-10 p-4 mx-auto max-w-6xl bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-100 "  >
         <div class="flex flex-row items-center justify-start   gap-3">
-            <button class="btn btn-primary mt-0 w-20  " type="submit">All</button>
-            <button class="btn btn-white mt-0 w-20 " type="submit">Open</button>
-            <button class="btn btn-white mt-0 w-20 " type="submit">Closed</button>
+           <button id="all-btn" class="btn btn-primary w-20">All</button>
+        <button id="open-btn" class="btn btn-white w-20">Open</button>
+        <button id="closed-btn" class="btn btn-white w-20">Closed</button>
         </div>
     </header>
 
@@ -66,11 +66,11 @@
 
      </section>
 
-     <section id="issue-list" class=" mt-5 p-4 mx-auto  bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-100 space-y-2 ">
+     <div id="issue-list" class=" mt-5 p-4 mx-auto  bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-100 space-y-2 ">
         <!-- <div class="flex flex-col gap-4"> -->
             <!-- Example issue item -->
              <!-- <div class="grid grid-cols-4"> -->
-            <div class="grid grid-cols-4 p-4 bg-base-200 rounded-lg  gap-3">
+            <!-- <div class="grid grid-cols-4 p-4 bg-base-200 rounded-lg  gap-3">
                 <div class = "space-y-5 shadow-lg p-5 ">
                 <div class="flex flex-row items-center justify-between  gap-3">
                       <img src="./assets/Open-Status.png" alt="Open Status" class="w-5 h-5">
@@ -87,28 +87,19 @@
                         <p class="bg-red-100 rounded-full px-5 text-red-800">Help-wanted</p>
                     </div>
                     <!-- <hr class="my-2 border-gray-300"> -->
-                    <div class=" m-0 p-2 rounded-lg shadow-lg  ">
+                    <!-- <div class=" m-0 p-2 rounded-lg shadow-lg  ">
                         <p>#1 by john_doe</p>
                         <p>1/15/2024</p>
                     </div>
                 </div>
                 
                
-                </div>
-              
-            
-
-
-             
-                
-
+                </div> -->
             
         
-     </section>>
-        
-
-
+     </div>
     
     <script src="./script/script.js"></script>
+    <script src="./script/dash.js"></script>
 </body>
 </html>
