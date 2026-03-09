@@ -1,53 +1,179 @@
+// document.addEventListener("DOMContentLoaded", () => {
+//     const allBtn = document.getElementById("all-btn");
+//     const openBtn = document.getElementById("open-btn");
+//     const closedBtn = document.getElementById("closed-btn");
+//     const issueList = document.getElementById("issue-list");
+
+//     let allIssues = []; // store all fetched issues
+
+//     // Attach button events
+//     allBtn.addEventListener("click", () => renderIssues("all"));
+//     openBtn.addEventListener("click", () => renderIssues("open"));
+//     closedBtn.addEventListener("click", () => renderIssues("closed"));
+
+//     // Fetch all issues once
+//     fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+//         .then(res => res.json())
+//         .then(data => {
+//             allIssues = data.data;
+//             renderIssues("all"); // show all on page load
+//         })
+//         .catch(err => console.error("Fetch error:", err));
+
+//     // Render issues based on filter
+//     function renderIssues(filter) {
+//         // highlight active button
+//         [allBtn, openBtn, closedBtn].forEach(btn => btn.classList.remove("btn-primary"));
+//         [allBtn, openBtn, closedBtn].forEach(btn => btn.classList.add("btn-white"));
+//         if(filter === "all") allBtn.classList.replace("btn-white", "btn-primary");
+//         else if(filter === "open") openBtn.classList.replace("btn-white", "btn-primary");
+//         else if(filter === "closed") closedBtn.classList.replace("btn-white", "btn-primary");
+
+//         // Filter issues
+//         let filtered = allIssues;
+//         if(filter === "open") filtered = allIssues.filter(issue => issue.status.toLowerCase() === "open");
+//         else if(filter === "closed") filtered = allIssues.filter(issue => issue.status.toLowerCase() === "closed");
+
+//         if(filtered.length === 0) {
+//             issueList.innerHTML = "<p class='text-center text-gray-500'>No issues found</p>";
+//             return;
+//         }
+
+//         // Clear previous
+//         issueList.innerHTML = "";
+//         const gridDiv = document.createElement("div");
+//         gridDiv.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4";
+
+//         filtered.forEach(issue => {
+//             let priorityClass = "";
+//             switch(issue.priority.toLowerCase()) {
+//                 case "high": priorityClass = "bg-red-100 text-red-800"; break;
+//                 case "medium": priorityClass = "bg-yellow-100 text-yellow-800"; break;
+//                 case "low": priorityClass = "bg-green-100 text-green-800"; break;
+//                 default: priorityClass = "bg-gray-100 text-gray-800";
+//             }
+
+//             let statusIcon = issue.status.toLowerCase() === "open" 
+//                 ? "./assets/Open-Status.png" 
+//                 : "./assets/Closed-Status.png";
+
+//             const issueCard = document.createElement("div");
+//             issueCard.className = "space-y-3 p-4 rounded shadow bg-base-200";
+//             issueCard.innerHTML = `
+//                 <div class="flex justify-between items-center">
+//                     <img src="${statusIcon}" class="w-5 h-5" alt="${issue.status}">
+//                     <p class="rounded-full px-3 ${priorityClass}">${issue.priority}</p>
+//                 </div>
+//                 <h3 class="font-bold text-sm">${issue.title}</h3>
+//                 <p class="text-gray-600 text-sm">${issue.description}</p>
+//                 <div class="flex gap-2">
+//                     ${issue.labels.map(label => `<p class="bg-gray-100 rounded-full px-2 text-gray-800">${label}</p>`).join("")}
+//                 </div>
+//                 <div class="p-2 rounded shadow text-sm">
+//                     <p>#${issue.id} by ${issue.author}</p>
+//                     <p>${issue.createdAt}</p>
+//                 </div>
+//             `;
+//             gridDiv.appendChild(issueCard);
+//         });
+
+//         issueList.appendChild(gridDiv);
+//     }
+// });
 document.addEventListener("DOMContentLoaded", () => {
 
     const allBtn = document.getElementById("all-btn");
+    const openBtn = document.getElementById("open-btn");
+    const closedBtn = document.getElementById("closed-btn");
     const issueList = document.getElementById("issue-list");
 
-    // Event listener for All button
-    allBtn.addEventListener("click", loadIssues);
-    function loadIssues() {
-        console.log("Button clicked"); // DEBUG
+    let allIssues = []; // store all issues from API
 
-        const url = "https://phi-lab-server.vercel.app/api/v1/lab/issues";
+    // Fetch all issues once
+    fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+        .then(res => res.json())
+        .then(data => {
+            allIssues = data.data;
+            renderIssues("all"); // display all by default
+        })
+        .catch(err => console.error("Fetch error:", err));
 
-        fetch(url)
-            .then(res => res.json())
-            .then(data => displayIssues(data))
-            .catch(err => console.error("Fetch error:", err));
-    }
+    // Attach button events
+    allBtn.addEventListener("click", () => renderIssues("all"));
+    openBtn.addEventListener("click", () => renderIssues("open"));
+    closedBtn.addEventListener("click", () => renderIssues("closed"));
 
-    function displayIssues(issuesData) {
-        if (!issuesData || !issuesData.data) {
-            issueList.innerHTML = "<p>No data found</p>";
+    // Render issues filtered by type
+    function renderIssues(filter) {
+        // Highlight active button
+        [allBtn, openBtn, closedBtn].forEach(btn => btn.classList.remove("btn-primary"));
+        [allBtn, openBtn, closedBtn].forEach(btn => btn.classList.add("btn-white"));
+        if(filter === "all") allBtn.classList.replace("btn-white", "btn-primary");
+        else if(filter === "open") openBtn.classList.replace("btn-white", "btn-primary");
+        else if(filter === "closed") closedBtn.classList.replace("btn-white", "btn-primary");
+
+        // Filter issues client-side
+        let filtered = allIssues;
+        if(filter === "open") filtered = allIssues.filter(i => i.status.toLowerCase() === "open");
+        else if(filter === "closed") filtered = allIssues.filter(i => i.status.toLowerCase() === "closed");
+
+        // Show message if empty
+        if(filtered.length === 0) {
+            issueList.innerHTML = "<p class='text-center text-gray-500'>No issues found</p>";
             return;
         }
 
-        issueList.innerHTML = ""; // clear previous
-
-        // Create grid container
+        // Clear previous
+        issueList.innerHTML = "";
         const gridDiv = document.createElement("div");
         gridDiv.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4";
 
-        // Loop through issues
-        issuesData.data.forEach(issue => {
+        filtered.forEach(issue => {
+            // Dynamic priority color
+            let priorityClass = "";
+            switch(issue.priority.toLowerCase()) {
+                case "high": priorityClass = "bg-red-100 text-red-800"; break;
+                case "medium": priorityClass = "bg-yellow-100 text-yellow-800"; break;
+                case "low": priorityClass = "bg-green-100 text-green-800"; break;
+                default: priorityClass = "bg-gray-100 text-gray-800";
+            }
+
+            // Dynamic status icon
+            let statusIcon = issue.status.toLowerCase() === "open" 
+                ? "./assets/Open-Status.png" 
+                : "./assets/Closed-Status.png";
+
+            // Dynamic label colors
+            const getLabelClass = (label) => {
+                switch(label.toLowerCase()) {
+                    case "bug": return "bg-red-100 text-red-800";
+                    case "enhancement": return "bg-green-100 text-green-800";
+                    case "help-wanted": return "bg-yellow-100 text-yellow-800";
+                    default: return "bg-violet-100 text-violet-800";
+                }
+            };
+
+            // Create card
             const issueCard = document.createElement("div");
             issueCard.className = "space-y-3 p-4 rounded shadow bg-base-200";
-
             issueCard.innerHTML = `
                 <div class="flex justify-between items-center">
-                    <img src="./assets/Open-Status.png" class="w-5 h-5" alt="status">
-                    <p class="bg-red-100 rounded-full px-3 text-red-800">${issue.priority}</p>
+                    <img src="${statusIcon}" class="w-5 h-5" alt="${issue.status}">
+                    <p class="rounded-full px-3 ${priorityClass}">${issue.priority}</p>
                 </div>
                 <h3 class="font-bold text-sm">${issue.title}</h3>
                 <p class="text-gray-600 text-sm">${issue.description}</p>
                 <div class="flex gap-2">
-                    ${issue.labels.map(label => `<p class="bg-red-100 rounded-full px-2 text-red-800">${label}</p>`).join("")}
+                    ${issue.labels.map(label => 
+                        `<p class="rounded-full px-2 text-sm ${getLabelClass(label)}">${label}</p>`
+                    ).join("")}
                 </div>
                 <div class="p-2 rounded shadow text-sm">
                     <p>#${issue.id} by ${issue.author}</p>
                     <p>${issue.createdAt}</p>
                 </div>
             `;
+
             gridDiv.appendChild(issueCard);
         });
 
