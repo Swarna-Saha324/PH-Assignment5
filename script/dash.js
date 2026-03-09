@@ -215,13 +215,51 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
 
             // --- CLICK EVENT (Loop-er vitore thakte hobe) ---
-            issueCard.addEventListener("click", () => {
-                const modal = document.getElementById("my_modal_5");
-                modal.querySelector("h3").innerText = issue.title;
-                modal.querySelector("p.py-4").innerText = issue.description;
-                modal.showModal();
-            });
+            // issueCard.addEventListener("click", () => {
+            //     const modal = document.getElementById("my_modal_5");
+            //     modal.querySelector("h3").innerText = issue.title;
+            //     modal.querySelector("p.py-4").innerText = issue.description;
+            //     modal.showModal();
+            // });
+          issueCard.addEventListener("click", () => {
+    const issueId = issue.id; // Loop theke id nilam
+    
+    // Specific Issue API Fetch
+    fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${issueId}`)
+        .then(res => res.json())
+        .then(response => {
+            const data = response.data;
+            const modal = document.getElementById("my_modal_5");
 
+            // 1. Basic Data Fill
+            document.getElementById("modal-title").innerText = data.title;
+            document.getElementById("modal-description").innerText = data.description;
+            document.getElementById("modal-meta").innerText = `Opened by ${data.author} • ${new Date(data.createdAt).toLocaleDateString()}`;
+            document.getElementById("modal-assignee").innerText = data.assignee || "Unassigned";
+
+            // 2. Status Badge
+            const statusBadge = document.getElementById("modal-status-badge");
+            statusBadge.innerText = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+            statusBadge.className = data.status.toLowerCase() === 'open' ? 'badge badge-success text-white' : 'badge badge-ghost';
+
+            // 3. Priority Badge
+            const priorityBadge = document.getElementById("modal-priority");
+            priorityBadge.innerText = data.priority.toUpperCase();
+            priorityBadge.className = `badge font-bold ${data.priority.toLowerCase() === 'high' ? 'bg-red-500 text-white' : 'bg-blue-100 text-blue-800'}`;
+
+            // 4. Dynamic Labels
+            const labelContainer = document.getElementById("modal-labels");
+            labelContainer.innerHTML = data.labels.map(l => 
+                `<span class="badge badge-outline border-orange-200 text-orange-600 bg-orange-50 uppercase text-[10px] font-bold">
+                    <i class="fa-solid fa-tag mr-1"></i> ${l}
+                </span>`
+            ).join("");
+
+            // 5. Open Modal
+            modal.showModal();
+        })
+        .catch(err => console.error("Error fetching single issue:", err));
+});
             gridDiv.appendChild(issueCard);
         });
 

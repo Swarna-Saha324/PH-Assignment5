@@ -100,19 +100,52 @@
      </div>
      <!-- Open the modal using ID.showModal() method -->
 <!-- <button class="btn" onclick="my_modal_5.showModal()">open modal</button> -->
-<dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+<!-- <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
   <div class="modal-box">
     <h3 class="text-lg font-bold">Hello!</h3>
     <p class="py-4">Press ESC key or click the button below to close</p>
     <div class="modal-action">
       <form method="dialog">
         <!-- if there is a button in form, it will close the modal -->
-        <button class="btn">Close</button>
+        <!-- <button class="btn">Close</button>
       </form>
     </div>
   </div>
 </dialog>
-     
+      --> 
+<dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box max-w-3xl">
+    <h3 id="modal-title" class="text-2xl font-bold text-gray-800"></h3>
+    
+    <div class="flex items-center gap-2 mt-2 text-gray-500 text-sm">
+        <span id="modal-status-badge" class="badge badge-success text-white"></span>
+        <span>•</span>
+        <span id="modal-meta"></span>
+    </div>
+
+    <div id="modal-labels" class="flex gap-2 mt-4"></div>
+
+    <p id="modal-description" class="py-6 text-gray-700 leading-relaxed border-b border-gray-100"></p>
+
+    <div class="grid grid-cols-2 gap-4 mt-6 p-4 bg-gray-50 rounded-xl">
+        <div>
+            <p class="text-gray-500 text-xs uppercase tracking-wider">Assignee:</p>
+            <p id="modal-assignee" class="font-bold text-gray-800"></p>
+        </div>
+        <div>
+            <p class="text-gray-500 text-xs uppercase tracking-wider">Priority:</p>
+            <span id="modal-priority" class="badge font-bold"></span>
+        </div>
+    </div>
+
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-primary bg-[#570df8] border-none px-8">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+
     
     <script src="./script/script.js"></script>
     <script src="./script/dash.js"></script>
