@@ -12,7 +12,7 @@
       
       
       // 4. Redirect to another page (change dashboard.html to your actual file)
-      window.location.href = 'dashboard.html'; 
+      window.location.assign("./dashboard.html");
     } else {
       // 5. If it's wrong, show an error
       alert('Invalid username or password!');
