@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const getLabelClass = (l) => l.toLowerCase() === "bug" ? "bg-red-100 text-red-800" : "bg-violet-100 text-violet-800";
         
-        const statusIcon = issue.status.toLowerCase() === "open" ? "../assets/Open-Status.png" : "../assets/Closed-Status.png";
+        const statusIcon = issue.status.toLowerCase() === "open" ? "./assets/Open-Status.png" : "./assets/Closed-Status.png";
         const borderClass = issue.status.toLowerCase() === "open" ? "border-green-500 border-t-green-500" : "border-violet-500 border-t-violet-500";
 
         const card = document.createElement("div");
